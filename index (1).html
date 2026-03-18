@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digitalización Extremadura — Junta de Extremadura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', 'Segoe UI', sans-serif; color: #1c1917; background: #fff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+  .f-serif { font-family: 'Lora', Georgia, serif !important; }
+  .tg { background: linear-gradient(130deg,#059669,#0891b2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Layout */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .container-md { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAVBAR */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: transparent; border-bottom: 1px solid transparent;
+    transition: all .3s ease;
+  }
+  #navbar.scrolled {
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid #e7e5e4;
+    box-shadow: 0 1px 12px rgba(0,0,0,.06);
+    backdrop-filter: blur(20px);
+  }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; background: none; border: none; cursor: pointer; text-decoration: none; }
+  .nav-logo-icon { width: 26px; height: 26px; border-radius: 6px; background: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .nav-logo-text-main { font-size: 10px; font-weight: 600; color: #fff; line-height: 1.2; transition: color .2s; }
+  .nav-logo-text-sub { font-size: 8px; font-weight: 500; color: rgba(255,255,255,.4); letter-spacing: .15em; text-transform: uppercase; line-height: 1.2; transition: color .2s; }
+  #navbar.scrolled .nav-logo-text-main { color: #1c1917; }
+  #navbar.scrolled .nav-logo-text-sub { color: #a8a29e; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-link {
+    background: none; border: none; cursor: pointer; font-size: 12px; font-weight: 500;
+    color: rgba(255,255,255,.6); transition: color .15s; padding: 4px 0; font-family: inherit;
+    position: relative;
+  }
+  .nav-link::after { content:''; display:block; position:absolute; bottom:-2px; left:0; width:0; height:1.5px; background:#059669; transition:width .2s; }
+  .nav-link:hover::after { width:100%; }
+  .nav-link:hover { color: #fff; }
+  #navbar.scrolled .nav-link { color: #78716c; }
+  #navbar.scrolled .nav-link:hover { color: #1c1917; }
+  .lang-switcher { display: flex; background: rgba(255,255,255,.1); border-radius: 99px; padding: 3px; transition: background .3s; }
+  #navbar.scrolled .lang-switcher { background: #f5f5f4; }
+  .lang-btn {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 99px; border: none; cursor: pointer; font-family: inherit;
+    background: transparent; color: rgba(255,255,255,.4); transition: all .18s;
+  }
+  .lang-btn.active { background: rgba(255,255,255,.22); color: #fff; }
+  #navbar.scrolled .lang-btn.active { background: #fff; color: #059669; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+  #navbar.scrolled .lang-btn { color: #a8a29e; }
+  .burger { background: none; border: none; cursor: pointer; padding: 6px; display: none; flex-direction: column; gap: 5px; }
+  .burger span { display: block; width: 20px; height: 1.5px; background: #fff; border-radius: 1px; transition: all .2s; }
+  #navbar.scrolled .burger span { background: #44403c; }
+  .burger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+  #mobile-menu { display: none; background: rgba(255,255,255,.98); backdrop-filter: blur(20px); border-top: 1px solid #f5f5f4; padding: 16px 24px 20px; flex-direction: column; gap: 14px; }
+  #mobile-menu.open { display: flex; }
+  .mobile-nav-link { background: none; border: none; text-align: left; font-size: 14px; font-weight: 500; color: #57534e; cursor: pointer; padding: 2px 0; font-family: inherit; }
+
+  /* HERO */
+  #hero { min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: relative; background: #0c0f14; }
+  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-content { position: relative; flex: 1; display: flex; align-items: flex-end; padding-bottom: 60px; padding-top: 20px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(255,255,255,.1); border-radius: 99px;
+    color: rgba(255,255,255,.4); font-size: 9px; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase; padding: 5px 12px;
+    opacity: 0; transform: translateY(8px); transition: all .8s ease;
+  }
+  .hero-eyebrow.visible { opacity: 1; transform: translateY(0); }
+  .hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; flex-shrink: 0; }
+  .hero-eyebrow-wrap { position: relative; padding: 90px 24px 0; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .hero-h1 { color: #fff; font-weight: 400; line-height: .96; font-size: clamp(3rem, 9vw, 7rem); margin-bottom: 24px; opacity: 0; transform: translateY(20px); transition: all .9s ease .1s; }
+  .hero-h1.visible { opacity: 1; transform: translateY(0); }
+  .hero-sub { color: rgba(255,255,255,.58); font-size: 17px; line-height: 1.7; font-weight: 300; margin-bottom: 36px; max-width: 560px; opacity: 0; transform: translateY(20px); transition: all .9s ease .22s; }
+  .hero-sub.visible { opacity: 1; transform: translateY(0); }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; transform: translateY(20px); transition: all .9s ease .32s; }
+  .hero-ctas.visible { opacity: 1; transform: translateY(0); }
+  .btn-primary { display: inline-flex; align-items: center; background: #065f46; color: #fff; font-size: 13px; font-weight: 600; padding: 11px 26px; border-radius: 99px; border: none; cursor: pointer; transition: all .2s; text-decoration: none; font-family: inherit; }
+  .btn-primary:hover { background: #047857; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(5,150,105,.3); }
+  .btn-secondary { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.85); font-size: 13px; font-weight: 500; padding: 11px 26px; border-radius: 99px; cursor: pointer; transition: all .2s; background: rgba(255,255,255,.06); text-decoration: none; font-family: inherit; }
+  .btn-secondary:hover { background: rgba(255,255,255,.12); }
+  .ticker-strip { position: relative; border-top: 1px solid rgba(255,255,255,.06); overflow: hidden; padding: 10px 0; }
+  .ticker-inner { animation: ticker 36s linear infinite; white-space: nowrap; display: inline-flex; color: rgba(255,255,255,.15); font-size: 9px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
+  .ticker-item { flex-shrink: 0; margin-right: 48px; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTION LABEL */
+  .sec-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 9px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+    padding: 5px 11px; border-radius: 99px;
+    border: 1px solid #e7e5e4; color: #78716c; background: #fafaf9;
+  }
+  .sec-label.dark { border-color: rgba(255,255,255,.15); color: rgba(255,255,255,.5); background: transparent; }
+  .sec-label-dot { width: 6px; height: 6px; border-radius: 50%; background: #059669; flex-shrink: 0; }
+  .sec-label.dark .sec-label-dot { background: #34d399; }
+  .rule { width: 36px; height: 2px; border-radius: 2px; background: linear-gradient(90deg,#059669,#0891b2); margin: 20px 0 28px; }
+  .rule.center { margin: 20px auto 28px; }
+
+  /* REVEAL animation */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 60ms; }
+  .reveal-d2 { transition-delay: 120ms; }
+  .reveal-d3 { transition-delay: 180ms; }
+  .reveal-d4 { transition-delay: 240ms; }
+  .reveal-d5 { transition-delay: 300ms; }
+
+  /* CARD hover */
+  .ch { transition: transform .28s cubic-bezier(.22,.68,0,1.2), box-shadow .28s ease; }
+  .ch:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,.09); }
+
+  /* CHIP TAG */
+  .chip-tag { display: inline-block; font-size: 8px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; }
+
+  /* SECTIONS */
+  section { position: relative; }
+
+  /* MISIÓN */
+  #mision { padding: 80px 0 96px; background: #fff; }
+  .mision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .area-card { display: flex; gap: 14px; align-items: flex-start; border: 1px solid #f5f5f4; border-radius: 16px; padding: 16px 18px; background: #fafaf9; margin-bottom: 12px; transition: box-shadow .25s; }
+  .area-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+  .area-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(5,150,105,.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #059669; font-size: 12px; font-weight: 700; font-family: monospace; }
+  .map-container { border-radius: 24px; overflow: hidden; border: 1px solid #f5f5f4; background: #f9fafb; }
+  .map-caption { padding: 14px 20px; border-top: 1px solid #f0fdf4; background: #f0fdf4; font-size: 11px; color: #065f46; font-weight: 500; line-height: 1.5; }
+
+  /* LÍNEAS */
+  #lineas { padding: 80px 0 96px; background: #0c0f14; position: relative; overflow: hidden; }
+  .lineas-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.025) 1px, transparent 1px); background-size: 48px 48px; }
+  .lineas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,.05); border-radius: 16px; overflow: hidden; }
+  .linea-card { background: #0c0f14; padding: 28px 28px 32px; display: flex; flex-direction: column; gap: 18px; transition: background .25s; }
+  .linea-card:hover { background: #111418; }
+  .linea-bar { width: 24px; height: 2px; background: #059669; border-radius: 2px; transition: width .3s ease; }
+  .linea-card:hover .linea-bar { width: 48px; }
+
+  /* ÁMBITOS */
+  #ambitos { padding: 80px 0 96px; background: #fff; }
+  .ambitos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ambito-card { border-radius: 20px; overflow: hidden; border: 1px solid #f5f5f4; }
+  .ambito-visual { position: relative; }
+  .ambito-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 18px; background: linear-gradient(to top, rgba(0,0,0,.5), transparent); }
+
+  /* INICIATIVAS */
+  #iniciativas { padding: 80px 0 96px; background: #fafaf9; }
+  .iniciativas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .iniciativas-sticky { position: sticky; top: 96px; }
+  .ini-card { display: flex; gap: 16px; align-items: flex-start; background: #fff; border: 1px solid #f5f5f4; border-radius: 16px; padding: 18px 20px; margin-bottom: 10px; transition: border-color .2s; }
+  .ini-card:hover { border-color: #d1fae5; }
+  .ini-icon { width: 36px; height: 36px; border-radius: 10px; background: #f0fdf4; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; font-weight: 700; color: #059669; font-family: monospace; }
+
+  /* DIRECTOR */
+  #director { padding: 64px 0 80px; background: #fff; }
+  .director-card { border: 1px solid #e7e5e4; border-radius: 24px; overflow: hidden; }
+  .director-inner { display: grid; grid-template-columns: 220px 1fr; }
+  .director-portrait { background: #f5f5f4; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; min-height: 260px; }
+  .director-portrait-circle { width: 80px; height: 80px; border-radius: 50%; background: #e7e5e4; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .director-bio { padding: 28px 32px; display: flex; flex-direction: column; justify-content: center; }
+
+  /* VISIÓN */
+  #vision { position: relative; overflow: hidden; }
+  .vision-bg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .vision-inner { position: relative; padding: 80px 0 96px; }
+  .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+  .vision-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .vision-dot-wrap { width: 20px; height: 20px; border-radius: 50%; background: rgba(5,150,105,.15); border: 1px solid rgba(5,150,105,.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .vision-dot { width: 6px; height: 6px; border-radius: 50%; background: #34d399; }
+
+  /* CONTACTO */
+  #contacto { padding: 80px 0 96px; background: #fff; }
+  .contacto-card { border: 1px solid #e7e5e4; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.05); }
+  .contacto-inner { display: grid; grid-template-columns: 1fr 1fr; }
+  .contacto-data { background: #0c0f14; padding: 36px 32px; color: #fff; display: flex; flex-direction: column; gap: 24px; }
+  .contacto-row { padding-top: 24px; border-top: 1px solid rgba(255,255,255,.06); }
+  .contacto-row:first-child { padding-top: 0; border-top: none; }
+  .contacto-key { font-size: 9px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #34d399; margin-bottom: 6px; }
+  .contacto-val { color: #d6d3d1; font-size: 13px; font-weight: 300; }
+  .contacto-val a { color: #f5f5f4; font-size: 13px; font-weight: 300; text-decoration: none; transition: color .15s; word-break: break-all; }
+  .contacto-val a:hover { color: #34d399; }
+  .contacto-sub { color: #57534e; font-size: 11px; font-weight: 300; margin-top: 3px; }
+  .active-indicator { margin-top: auto; border-top: 1px solid rgba(255,255,255,.06); padding-top: 20px; display: flex; align-items: center; gap: 8px; }
+  .active-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .contacto-cta { padding: 36px 32px; background: #fff; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; }
+  .contacto-icon-wrap { width: 44px; height: 44px; border-radius: 12px; background: #f0fdf4; border: 1px solid #d1fae5; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .btn-outline { display: flex; align-items: center; justify-content: center; border: 1px solid #e7e5e4; border-radius: 99px; padding: 11px 24px; font-size: 13px; font-weight: 500; color: #57534e; text-decoration: none; transition: all .18s; background: #fff; font-family: inherit; }
+  .btn-outline:hover { border-color: #d1fae5; background: #f0fdf4; }
+  .eu-note { font-size: 10px; color: #d6d3d1; line-height: 1.6; border-top: 1px solid #f5f5f4; padding-top: 20px; }
+
+  /* FOOTER */
+  footer { background: #0c0f14; border-top: 1px solid rgba(255,255,255,.04); padding: 36px 0 28px; }
+  .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .footer-logo { display: flex; align-items: center; gap: 10px; }
+  .footer-icon { width: 24px; height: 24px; border-radius: 6px; background: #059669; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 20px; }
+  .footer-link { background: none; border: none; cursor: pointer; font-size: 10px; color: #57534e; transition: color .15s; font-family: inherit; }
+  .footer-link:hover { color: #a8a29e; }
+  .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .burger { display: flex; }
+    .mision-grid { grid-template-columns: 1fr; }
+    .lineas-grid { grid-template-columns: 1fr 1fr; }
+    .ambitos-grid { grid-template-columns: 1fr 1fr; }
+    .iniciativas-grid { grid-template-columns: 1fr; }
+    .iniciativas-sticky { position: static; }
+    .vision-grid { grid-template-columns: 1fr; }
+    .contacto-inner { grid-template-columns: 1fr; }
+    .director-inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .lineas-grid { grid-template-columns: 1fr; }
+    .ambitos-grid { grid-template-columns: 1fr; }
+    .hero-h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════════════════════ -->
+<header id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      <span class="nav-logo-icon">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1.5 6h9M6 1.5L10.5 6 6 10.5" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div>
+        <div class="nav-logo-text-main">Junta de Extremadura</div>
+        <div class="nav-logo-text-sub">Digitalización Regional</div>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <button class="nav-link" onclick="goTo('mision')">Misión</button>
+      <button class="nav-link" onclick="goTo('lineas')">Líneas</button>
+      <button class="nav-link" onclick="goTo('ambitos')">Ámbitos</button>
+      <button class="nav-link" onclick="goTo('iniciativas')">Iniciativas</button>
+      <button class="nav-link" onclick="goTo('contacto')">Contacto</button>
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+      <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu">
+    <button class="mobile-nav-link" onclick="goTo('mision')">Misión</button>
+    <button class="mobile-nav-link" onclick="goTo('lineas')">Líneas de Actuación</button>
+    <button class="mobile-nav-link" onclick="goTo('ambitos')">Ámbitos</button>
+    <button class="mobile-nav-link" onclick="goTo('iniciativas')">Iniciativas</button>
+    <button class="mobile-nav-link" onclick="goTo('contacto')">Contacto</button>
+  </div>
+</header>
+
+<!-- ══ HERO ════════════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <svg class="hero-bg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0c0f14"/>
+        <stop offset="50%" stop-color="#0f1a12"/>
+        <stop offset="100%" stop-color="#0a1520"/>
+      </linearGradient>
+      <radialGradient id="hglow1" cx="20%" cy="80%" r="50%">
+        <stop offset="0%" stop-color="#059669" stop-opacity="0.12"/>
+        <stop offset="100%" stop-color="#059669" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="hglow2" cx="80%" cy="30%" r="40%">
+        <stop offset="0%" stop-color="#0891b2" stop-opacity="0.09"/>
+        <stop offset="100%" stop-color="#0891b2" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="700" fill="url(#hbg)"/>
+    <rect width="1200" height="700" fill="url(#hglow1)"/>
+    <rect width="1200" height="700" fill="url(#hglow2)"/>
+    <!-- Grid dots -->
+    <circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="125" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="175" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="225" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="275" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="325" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="375" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="425" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="475" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="525" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="575" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="625" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="675" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="725" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="775" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="825" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="875" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="925" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="975" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1025" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1075" cy="75" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1125" cy="75" r="1" fill="rgba(255,255,255,0.04)"/>
+    <circle cx="75" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="175" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="275" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="375" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="475" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="575" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="675" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="775" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="875" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="975" cy="175" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1075" cy="175" r="1" fill="rgba(255,255,255,0.04)"/>
+    <circle cx="75" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="175" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="275" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="375" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="475" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="575" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="675" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="775" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="875" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="975" cy="275" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1075" cy="275" r="1" fill="rgba(255,255,255,0.04)"/>
+    <circle cx="75" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="175" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="275" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="375" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="475" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="575" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="675" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="775" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="875" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="975" cy="375" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1075" cy="375" r="1" fill="rgba(255,255,255,0.04)"/>
+    <circle cx="75" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="175" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="275" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="375" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="475" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="575" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="675" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="775" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="875" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="975" cy="475" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1075" cy="475" r="1" fill="rgba(255,255,255,0.04)"/>
+    <circle cx="75" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="175" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="275" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="375" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="475" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="575" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="675" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="775" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="875" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="975" cy="575" r="1" fill="rgba(255,255,255,0.04)"/><circle cx="1075" cy="575" r="1" fill="rgba(255,255,255,0.04)"/>
+    <!-- Network lines -->
+    <line x1="100" y1="560" x2="350" y2="420" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="350" y1="420" x2="600" y2="500" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="600" y1="500" x2="900" y2="380" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="900" y1="380" x2="1100" y2="480" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="350" y1="420" x2="500" y2="200" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="500" y1="200" x2="780" y2="260" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="780" y1="260" x2="1050" y2="150" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="200" y1="300" x2="350" y2="420" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <line x1="600" y1="500" x2="700" y2="620" stroke="rgba(5,150,105,0.15)" stroke-width="1"/>
+    <!-- Network nodes -->
+    <circle cx="100" cy="560" r="2.5" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="350" cy="420" r="4" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="600" cy="500" r="4" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="900" cy="380" r="4" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="1100" cy="480" r="2.5" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="500" cy="200" r="2.5" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="780" cy="260" r="2.5" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="1050" cy="150" r="2.5" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="200" cy="300" r="2.5" fill="rgba(5,150,105,0.4)"/>
+    <circle cx="700" cy="620" r="2.5" fill="rgba(5,150,105,0.4)"/>
+  </svg>
+
+  <div class="hero-eyebrow-wrap">
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      <span id="hero-eyebrow-text">Junta de Extremadura · Consejería competente en digitalización</span>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="container">
+      <h1 class="hero-h1 f-serif" id="hero-h1">
+        <span id="hero-h1a">Digitalización</span><br>
+        <em class="tg" style="font-style:normal;" id="hero-h1b">de Extremadura.</em>
+      </h1>
+      <p class="hero-sub" id="hero-sub">La Dirección General de Digitalización Regional impulsa la modernización tecnológica de la administración pública extremeña y el despliegue de infraestructuras y servicios digitales en el conjunto del territorio.</p>
+      <div class="hero-ctas" id="hero-ctas">
+        <button class="btn-primary" onclick="goTo('lineas')" id="hero-cta1">Líneas de actuación</button>
+        <button class="btn-secondary" onclick="goTo('contacto')" id="hero-cta2">Contacto institucional</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker-strip">
+    <div class="ticker-inner">
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+      <span class="ticker-item">Digitalización Regional · Junta de Extremadura · Administración Electrónica · Conectividad · Agenda Digital ·&nbsp;</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MISIÓN ════════════════════════════════════════════════════════════ -->
+<section id="mision">
+  <div class="container">
+    <div class="mision-grid">
+      <!-- Left -->
+      <div>
+        <div class="reveal">
+          <span class="sec-label"><span class="sec-label-dot"></span><span id="label-mision">Función y Misión</span></span>
+          <div class="rule"></div>
+          <h2 class="f-serif" style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;color:#1c1917;line-height:1.3;margin-bottom:28px;" id="mision-h2">Una dirección general al servicio de la transformación digital de Extremadura.</h2>
+          <p style="color:#78716c;font-size:16px;line-height:1.75;font-weight:300;margin-bottom:20px;" id="mision-p1">La Dirección General de Digitalización Regional es el órgano de la Junta de Extremadura responsable de impulsar la transformación digital del territorio, la modernización de los servicios públicos y el fomento de la cultura y las capacidades digitales en la región.</p>
+          <p style="color:#a8a29e;font-size:15px;line-height:1.75;font-weight:300;" id="mision-p2">Su actuación se articula en torno a tres grandes ámbitos: la modernización interna de la administración, el despliegue de infraestructuras de conectividad y el apoyo a la digitalización de ciudadanos, empresas e instituciones.</p>
+        </div>
+        <div style="margin-top:36px;">
+          <div class="area-card reveal reveal-d1">
+            <div class="area-icon">A</div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:#1c1917;margin-bottom:4px;" id="area1-t">Administración pública</div>
+              <div style="font-size:12px;color:#a8a29e;line-height:1.6;font-weight:300;" id="area1-d">Modernización de los procesos y servicios de la administración regional mediante tecnología.</div>
+            </div>
+          </div>
+          <div class="area-card reveal reveal-d2">
+            <div class="area-icon">T</div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:#1c1917;margin-bottom:4px;" id="area2-t">Territorio e infraestructuras</div>
+              <div style="font-size:12px;color:#a8a29e;line-height:1.6;font-weight:300;" id="area2-d">Impulso a la conectividad y al despliegue de redes de telecomunicaciones en el territorio.</div>
+            </div>
+          </div>
+          <div class="area-card reveal reveal-d3">
+            <div class="area-icon">C</div>
+            <div>
+              <div style="font-weight:600;font-size:13px;color:#1c1917;margin-bottom:4px;" id="area3-t">Ciudadanía y empresas</div>
+              <div style="font-size:12px;color:#a8a29e;line-height:1.6;font-weight:300;" id="area3-d">Apoyo a la adopción digital por parte de ciudadanos, autónomos y tejido productivo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right — map visual -->
+      <div class="reveal reveal-d2">
+        <div class="map-container">
+          <svg width="100%" viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="mv1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ecfdf5"/>
+                <stop offset="100%" stop-color="#e0f2fe"/>
+              </linearGradient>
+              <linearGradient id="mv2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#059669" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#0891b2" stop-opacity="0.05"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="480" height="380" rx="0" fill="url(#mv1)"/>
+            <rect x="0" y="0" width="480" height="380" rx="0" fill="url(#mv2)"/>
+            <path d="M80 200 L120 160 L180 140 L250 130 L310 145 L370 160 L400 200 L390 240 L350 270 L300 285 L240 290 L180 280 L130 260 L90 235 Z" fill="rgba(5,150,105,0.08)" stroke="rgba(5,150,105,0.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <!-- Connection lines -->
+            <line x1="240" y1="210" x2="180" y2="185" stroke="rgba(5,150,105,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="240" y1="210" x2="305" y2="230" stroke="rgba(5,150,105,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="240" y1="210" x2="350" y2="175" stroke="rgba(5,150,105,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="240" y1="210" x2="160" y2="245" stroke="rgba(5,150,105,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+            <!-- Mérida -->
+            <circle cx="240" cy="210" r="7" fill="#059669" opacity="0.8"/>
+            <circle cx="240" cy="210" r="13" fill="none" stroke="#059669" stroke-width="1" opacity="0.25"/>
+            <text x="240" y="232" text-anchor="middle" font-size="10" fill="#044e37" font-family="'Outfit',sans-serif" font-weight="600" opacity="0.7">Mérida</text>
+            <!-- Cáceres -->
+            <circle cx="180" cy="185" r="4.5" fill="#0891b2" opacity="0.5"/>
+            <circle cx="180" cy="185" r="9" fill="none" stroke="#0891b2" stroke-width="1" opacity="0.15"/>
+            <text x="180" y="203" text-anchor="middle" font-size="8" fill="#044e37" font-family="'Outfit',sans-serif" opacity="0.7">Cáceres</text>
+            <!-- Badajoz -->
+            <circle cx="305" cy="230" r="4.5" fill="#0891b2" opacity="0.5"/>
+            <circle cx="305" cy="230" r="9" fill="none" stroke="#0891b2" stroke-width="1" opacity="0.15"/>
+            <text x="305" y="248" text-anchor="middle" font-size="8" fill="#044e37" font-family="'Outfit',sans-serif" opacity="0.7">Badajoz</text>
+            <!-- Plasencia -->
+            <circle cx="350" cy="175" r="4.5" fill="#0891b2" opacity="0.5"/>
+            <text x="350" y="193" text-anchor="middle" font-size="8" fill="#044e37" font-family="'Outfit',sans-serif" opacity="0.7">Plasencia</text>
+            <!-- Almendralejo -->
+            <circle cx="160" cy="245" r="4.5" fill="#0891b2" opacity="0.5"/>
+            <text x="160" y="263" text-anchor="middle" font-size="8" fill="#044e37" font-family="'Outfit',sans-serif" opacity="0.7">Almendralejo</text>
+            <!-- Legend -->
+            <rect x="30" y="310" width="420" height="50" rx="10" fill="rgba(255,255,255,0.7)"/>
+            <circle cx="55" cy="335" r="5" fill="#059669" opacity="0.7"/>
+            <text x="67" y="339" font-size="9" fill="#44403c" font-family="'Outfit',sans-serif">Capital regional</text>
+            <circle cx="170" cy="335" r="3.5" fill="#0891b2" opacity="0.5"/>
+            <text x="182" y="339" font-size="9" fill="#44403c" font-family="'Outfit',sans-serif">Municipios principales</text>
+            <line x1="300" y1="335" x2="325" y2="335" stroke="rgba(5,150,105,0.4)" stroke-width="1" stroke-dasharray="3 3"/>
+            <text x="332" y="339" font-size="9" fill="#44403c" font-family="'Outfit',sans-serif">Conectividad digital</text>
+          </svg>
+          <div class="map-caption" id="map-caption">Extremadura · Red de conectividad y servicios digitales · Representación esquemática</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LÍNEAS ════════════════════════════════════════════════════════════ -->
+<section id="lineas" style="padding:80px 0 96px;background:#0c0f14;position:relative;overflow:hidden;">
+  <div class="lineas-grid-bg"></div>
+  <div class="container" style="position:relative;">
+    <div class="reveal" style="max-width:640px;margin-bottom:56px;">
+      <span class="sec-label dark"><span class="sec-label-dot"></span><span id="label-lineas">Líneas de Actuación</span></span>
+      <div class="rule" style="background:linear-gradient(90deg,#059669,#0891b2);"></div>
+      <h2 class="f-serif" style="font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:400;color:#fff;line-height:1.25;margin-bottom:16px;" id="lineas-h2">Áreas de trabajo de la Dirección General.</h2>
+      <p style="color:#78716c;font-size:15px;line-height:1.7;font-weight:300;" id="lineas-sub">La actividad se estructura en torno a líneas de trabajo concretas, alineadas con los marcos estratégicos nacionales y europeos en materia de digitalización.</p>
+    </div>
+    <div class="lineas-grid">
+      <div class="linea-card reveal">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span class="chip-tag" style="background:rgba(5,150,105,.12);color:#34d399;" id="linea1-tag">Adm. electrónica</span>
+          <span class="f-serif" style="font-size:36px;color:rgba(255,255,255,.07);line-height:1;font-weight:400;">01</span>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:#f5f5f4;margin-bottom:10px;line-height:1.4;" id="linea1-t">Digitalización de servicios públicos</h3>
+          <p style="font-size:13px;color:#78716c;line-height:1.7;font-weight:300;" id="linea1-d">Desarrollo e implantación de la administración electrónica. Mejora de la sede electrónica y los servicios digitales de la Junta de Extremadura para facilitar la relación con la ciudadanía.</p>
+        </div>
+        <div class="linea-bar"></div>
+      </div>
+      <div class="linea-card reveal reveal-d1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span class="chip-tag" style="background:rgba(5,150,105,.12);color:#34d399;" id="linea2-tag">Gestión interna</span>
+          <span class="f-serif" style="font-size:36px;color:rgba(255,255,255,.07);line-height:1;font-weight:400;">02</span>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:#f5f5f4;margin-bottom:10px;line-height:1.4;" id="linea2-t">Modernización administrativa</h3>
+          <p style="font-size:13px;color:#78716c;line-height:1.7;font-weight:300;" id="linea2-d">Transformación de los procesos internos de gestión pública mediante tecnología. Interoperabilidad entre sistemas, gestión documental electrónica y mejora de la eficiencia operativa.</p>
+        </div>
+        <div class="linea-bar"></div>
+      </div>
+      <div class="linea-card reveal reveal-d2">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span class="chip-tag" style="background:rgba(5,150,105,.12);color:#34d399;" id="linea3-tag">Infraestructura</span>
+          <span class="f-serif" style="font-size:36px;color:rgba(255,255,255,.07);line-height:1;font-weight:400;">03</span>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:#f5f5f4;margin-bottom:10px;line-height:1.4;" id="linea3-t">Conectividad e infraestructuras</h3>
+          <p style="font-size:13px;color:#78716c;line-height:1.7;font-weight:300;" id="linea3-d">Coordinación y seguimiento del despliegue de redes de banda ancha en el territorio extremeño, con especial atención a entornos rurales y zonas con menor cobertura.</p>
+        </div>
+        <div class="linea-bar"></div>
+      </div>
+      <div class="linea-card reveal reveal-d1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span class="chip-tag" style="background:rgba(5,150,105,.12);color:#34d399;" id="linea4-tag">Empresas</span>
+          <span class="f-serif" style="font-size:36px;color:rgba(255,255,255,.07);line-height:1;font-weight:400;">04</span>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:#f5f5f4;margin-bottom:10px;line-height:1.4;" id="linea4-t">Digitalización empresarial</h3>
+          <p style="font-size:13px;color:#78716c;line-height:1.7;font-weight:300;" id="linea4-d">Programas de apoyo a la transformación digital de pymes y autónomos. Asesoramiento, formación y canalización de ayudas para la adopción de soluciones tecnológicas.</p>
+        </div>
+        <div class="linea-bar"></div>
+      </div>
+      <div class="linea-card reveal reveal-d2">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span class="chip-tag" style="background:rgba(5,150,105,.12);color:#34d399;" id="linea5-tag">Formación</span>
+          <span class="f-serif" style="font-size:36px;color:rgba(255,255,255,.07);line-height:1;font-weight:400;">05</span>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:#f5f5f4;margin-bottom:10px;line-height:1.4;" id="linea5-t">Capacidades y cultura digital</h3>
+          <p style="font-size:13px;color:#78716c;line-height:1.7;font-weight:300;" id="linea5-d">Formación en competencias digitales para ciudadanos, empleados públicos y colectivos con mayor riesgo de brecha digital. Alfabetización tecnológica y programas de capacitación.</p>
+        </div>
+        <div class="linea-bar"></div>
+      </div>
+      <div class="linea-card reveal reveal-d3">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <span class="chip-tag" style="background:rgba(5,150,105,.12);color:#34d399;" id="linea6-tag">Datos</span>
+          <span class="f-serif" style="font-size:36px;color:rgba(255,255,255,.07);line-height:1;font-weight:400;">06</span>
+        </div>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:#f5f5f4;margin-bottom:10px;line-height:1.4;" id="linea6-t">Gobernanza del dato</h3>
+          <p style="font-size:13px;color:#78716c;line-height:1.7;font-weight:300;" id="linea6-d">Gestión responsable de los datos de la administración regional. Apertura de datos públicos, analítica institucional y alineación con la normativa europea en materia de datos.</p>
+        </div>
+        <div class="linea-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ÁMBITOS ════════════════════════════════════════════════════════════ -->
+<section id="ambitos">
+  <div class="container" style="padding-top:80px;padding-bottom:96px;">
+    <div class="reveal" style="max-width:540px;margin-bottom:52px;">
+      <span class="sec-label"><span class="sec-label-dot"></span><span id="label-ambitos">Ámbitos de impacto</span></span>
+      <div class="rule"></div>
+      <h2 class="f-serif" style="font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:400;color:#1c1917;line-height:1.25;margin-bottom:16px;" id="ambitos-h2">A quién sirve la Dirección General.</h2>
+      <p style="color:#a8a29e;font-size:15px;line-height:1.7;font-weight:300;" id="ambitos-sub">La actuación tiene impacto directo en los principales agentes del territorio extremeño.</p>
+    </div>
+    <div class="ambitos-grid">
+      <!-- Ciudadanía -->
+      <div class="ambito-card ch reveal">
+        <div class="ambito-visual">
+          <svg width="100%" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ag-C" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#065f46" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#065f46" stop-opacity="0.6"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="180" fill="url(#ag-C)"/>
+            <circle cx="280" cy="30" r="80" fill="rgba(255,255,255,0.04)"/>
+            <circle cx="280" cy="30" r="50" fill="rgba(255,255,255,0.05)"/>
+            <circle cx="40" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="120" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="160" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="200" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="240" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="120" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="160" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="140" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="140" r="1" fill="rgba(255,255,255,0.08)"/>
+            <text x="24" y="145" font-size="80" font-family="Georgia,serif" font-weight="400" fill="rgba(255,255,255,0.06)">C</text>
+          </svg>
+          <div style="position:absolute;top:14px;left:14px;">
+            <span class="chip-tag" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" id="amb1-tag">Personas</span>
+          </div>
+          <div class="ambito-overlay">
+            <h3 class="f-serif" style="color:#fff;font-size:22px;font-weight:400;" id="amb1-t">Ciudadanía</h3>
+          </div>
+        </div>
+        <div style="padding:18px 18px 22px;background:#fff;">
+          <p style="font-size:13px;color:#78716c;line-height:1.65;font-weight:300;" id="amb1-d">Servicios públicos más accesibles y ágiles. Trámites en línea, reducción de desplazamientos y atención digital adaptada a todos los perfiles.</p>
+        </div>
+      </div>
+      <!-- Empresas -->
+      <div class="ambito-card ch reveal reveal-d1">
+        <div class="ambito-visual">
+          <svg width="100%" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ag-E" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0c4a6e" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#0c4a6e" stop-opacity="0.6"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="180" fill="url(#ag-E)"/>
+            <circle cx="280" cy="30" r="80" fill="rgba(255,255,255,0.04)"/>
+            <circle cx="280" cy="30" r="50" fill="rgba(255,255,255,0.05)"/>
+            <circle cx="40" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="120" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="160" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="200" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="120" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="140" r="1" fill="rgba(255,255,255,0.08)"/>
+            <text x="24" y="145" font-size="80" font-family="Georgia,serif" font-weight="400" fill="rgba(255,255,255,0.06)">E</text>
+          </svg>
+          <div style="position:absolute;top:14px;left:14px;">
+            <span class="chip-tag" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" id="amb2-tag">Sector productivo</span>
+          </div>
+          <div class="ambito-overlay">
+            <h3 class="f-serif" style="color:#fff;font-size:22px;font-weight:400;" id="amb2-t">Empresas</h3>
+          </div>
+        </div>
+        <div style="padding:18px 18px 22px;background:#fff;">
+          <p style="font-size:13px;color:#78716c;line-height:1.65;font-weight:300;" id="amb2-d">Apoyo a la transformación digital del tejido productivo regional. Asesoramiento, formación y acceso a financiación para la digitalización empresarial.</p>
+        </div>
+      </div>
+      <!-- Administración -->
+      <div class="ambito-card ch reveal reveal-d2">
+        <div class="ambito-visual">
+          <svg width="100%" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ag-A" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0.6"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="180" fill="url(#ag-A)"/>
+            <circle cx="280" cy="30" r="80" fill="rgba(255,255,255,0.04)"/>
+            <circle cx="280" cy="30" r="50" fill="rgba(255,255,255,0.05)"/>
+            <circle cx="40" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="120" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="160" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="140" r="1" fill="rgba(255,255,255,0.08)"/>
+            <text x="24" y="145" font-size="80" font-family="Georgia,serif" font-weight="400" fill="rgba(255,255,255,0.06)">A</text>
+          </svg>
+          <div style="position:absolute;top:14px;left:14px;">
+            <span class="chip-tag" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" id="amb3-tag">Sector público</span>
+          </div>
+          <div class="ambito-overlay">
+            <h3 class="f-serif" style="color:#fff;font-size:22px;font-weight:400;" id="amb3-t">Administración</h3>
+          </div>
+        </div>
+        <div style="padding:18px 18px 22px;background:#fff;">
+          <p style="font-size:13px;color:#78716c;line-height:1.65;font-weight:300;" id="amb3-d">Una administración más eficiente, interoperable y transparente. Mejora de los procesos internos y de la capacidad de respuesta de los servicios públicos.</p>
+        </div>
+      </div>
+      <!-- Territorio -->
+      <div class="ambito-card ch reveal reveal-d3">
+        <div class="ambito-visual">
+          <svg width="100%" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ag-T" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#422006" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#422006" stop-opacity="0.6"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="180" fill="url(#ag-T)"/>
+            <circle cx="280" cy="30" r="80" fill="rgba(255,255,255,0.04)"/>
+            <circle cx="280" cy="30" r="50" fill="rgba(255,255,255,0.05)"/>
+            <circle cx="40" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="120" cy="40" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="80" cy="90" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="40" cy="140" r="1" fill="rgba(255,255,255,0.08)"/>
+            <text x="24" y="145" font-size="80" font-family="Georgia,serif" font-weight="400" fill="rgba(255,255,255,0.06)">T</text>
+          </svg>
+          <div style="position:absolute;top:14px;left:14px;">
+            <span class="chip-tag" style="background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);" id="amb4-tag">Cohesión territorial</span>
+          </div>
+          <div class="ambito-overlay">
+            <h3 class="f-serif" style="color:#fff;font-size:22px;font-weight:400;" id="amb4-t">Territorio</h3>
+          </div>
+        </div>
+        <div style="padding:18px 18px 22px;background:#fff;">
+          <p style="font-size:13px;color:#78716c;line-height:1.65;font-weight:300;" id="amb4-d">Reducción de la brecha digital entre entornos urbanos y rurales. Conectividad de calidad como palanca de vertebración e igualdad territorial.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INICIATIVAS ════════════════════════════════════════════════════════ -->
+<section id="iniciativas">
+  <div class="container" style="padding-top:80px;padding-bottom:96px;">
+    <div class="iniciativas-grid">
+      <div class="iniciativas-sticky">
+        <div class="reveal">
+          <span class="sec-label"><span class="sec-label-dot"></span><span id="label-iniciativas">Iniciativas y actuaciones</span></span>
+          <div class="rule"></div>
+          <h2 class="f-serif" style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;color:#1c1917;line-height:1.3;margin-bottom:16px;" id="iniciativas-h2">Líneas de trabajo en desarrollo.</h2>
+          <p style="color:#a8a29e;font-size:14px;line-height:1.7;font-weight:300;" id="iniciativas-sub">La Dirección General coordina actuaciones alineadas con la Agenda España Digital 2026 y los objetivos del Decenio Digital de la Unión Europea.</p>
+        </div>
+      </div>
+      <div>
+        <div class="ini-card reveal">
+          <div class="ini-icon">01</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#1c1917;margin-bottom:6px;line-height:1.3;" id="ini1-t">Agenda Digital de Extremadura</div>
+            <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="ini1-d">Marco estratégico que define los objetivos, prioridades y líneas de acción de la digitalización regional, en coherencia con los planes nacionales y europeos.</p>
+          </div>
+        </div>
+        <div class="ini-card reveal reveal-d1">
+          <div class="ini-icon">02</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#1c1917;margin-bottom:6px;line-height:1.3;" id="ini2-t">Administración electrónica</div>
+            <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="ini2-d">Desarrollo continuo de la sede electrónica de la Junta de Extremadura y de los servicios digitales disponibles para la ciudadanía y las empresas.</p>
+          </div>
+        </div>
+        <div class="ini-card reveal reveal-d2">
+          <div class="ini-icon">03</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#1c1917;margin-bottom:6px;line-height:1.3;" id="ini3-t">Plan de conectividad</div>
+            <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="ini3-d">Seguimiento del despliegue de redes de banda ancha en Extremadura y coordinación con los programas de ayuda para extensión de cobertura en zonas rurales.</p>
+          </div>
+        </div>
+        <div class="ini-card reveal reveal-d1">
+          <div class="ini-icon">04</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#1c1917;margin-bottom:6px;line-height:1.3;" id="ini4-t">Digitalización empresarial</div>
+            <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="ini4-d">Programas de apoyo a pymes en el marco del Plan de Recuperación, canalizando los fondos Next Generation EU destinados a digitalización empresarial.</p>
+          </div>
+        </div>
+        <div class="ini-card reveal reveal-d2">
+          <div class="ini-icon">05</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#1c1917;margin-bottom:6px;line-height:1.3;" id="ini5-t">Formación digital</div>
+            <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="ini5-d">Programas de capacitación digital para empleados públicos, ciudadanos y colectivos vulnerables, en colaboración con entidades formativas y sociales del territorio.</p>
+          </div>
+        </div>
+        <div class="ini-card reveal reveal-d3">
+          <div class="ini-icon">06</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;color:#1c1917;margin-bottom:6px;line-height:1.3;" id="ini6-t">Datos abiertos</div>
+            <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="ini6-d">Gestión del portal de datos abiertos de la Junta de Extremadura y desarrollo de la política regional de gobernanza del dato en el Espacio Europeo de Datos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DIRECTOR ════════════════════════════════════════════════════════════ -->
+<section id="director" style="padding:64px 0 80px;background:#fff;">
+  <div class="container-md">
+    <div class="reveal">
+      <div class="director-card">
+        <div class="director-inner">
+          <div class="director-portrait">
+            <!--
+              NOTA: Sustituir este bloque por la fotografía institucional oficial de
+              Jesús Coslado Santibáñez. Retrato de medio cuerpo, fondo neutro.
+              Recomendado: <img src="foto-director.jpg" alt="..." style="width:100%;height:100%;object-fit:cover;">
+            -->
+            <div class="director-portrait-circle">
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                <circle cx="18" cy="13" r="7" stroke="#a8a29e" stroke-width="1.5" fill="none"/>
+                <path d="M4 34c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#a8a29e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p style="font-size:10px;color:#a8a29e;text-align:center;line-height:1.5;" id="director-imgnote">Fotografía institucional oficial · pendiente de incorporar</p>
+          </div>
+          <div class="director-bio">
+            <span class="sec-label"><span class="sec-label-dot"></span><span id="label-director">Dirección General</span></span>
+            <div style="margin-top:16px;">
+              <div style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#a8a29e;margin-bottom:4px;" id="director-org">Junta de Extremadura</div>
+              <h2 class="f-serif" style="font-size:1.6rem;font-weight:400;color:#1c1917;margin-bottom:4px;">Jesús Coslado Santibáñez</h2>
+              <div style="font-size:13px;font-weight:600;color:#059669;margin-bottom:20px;" id="director-role">Director General de Digitalización Regional</div>
+              <div style="width:32px;height:2px;background:linear-gradient(90deg,#059669,#0891b2);border-radius:2px;margin-bottom:20px;"></div>
+              <p style="font-size:14px;color:#78716c;line-height:1.7;font-weight:300;" id="director-bio">Al frente de la Dirección General de Digitalización Regional, coordina las políticas y actuaciones de la Junta de Extremadura en materia de transformación digital del territorio, modernización administrativa e infraestructuras digitales.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ VISIÓN ═════════════════════════════════════════════════════════════ -->
+<section id="vision" style="position:relative;overflow:hidden;">
+  <svg class="vision-bg" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="vbg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#0c0f14"/>
+        <stop offset="100%" stop-color="#071a12"/>
+      </linearGradient>
+      <radialGradient id="vglow" cx="30%" cy="60%" r="50%">
+        <stop offset="0%" stop-color="#059669" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#059669" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="500" fill="url(#vbg)"/>
+    <rect width="1200" height="500" fill="url(#vglow)"/>
+    <circle cx="200" cy="500" r="80" fill="none" stroke="rgba(5,150,105,0.06)" stroke-width="1"/>
+    <circle cx="200" cy="500" r="160" fill="none" stroke="rgba(5,150,105,0.06)" stroke-width="1"/>
+    <circle cx="200" cy="500" r="240" fill="none" stroke="rgba(5,150,105,0.06)" stroke-width="1"/>
+    <circle cx="200" cy="500" r="320" fill="none" stroke="rgba(5,150,105,0.06)" stroke-width="1"/>
+    <circle cx="200" cy="500" r="400" fill="none" stroke="rgba(5,150,105,0.06)" stroke-width="1"/>
+    <line x1="0" y1="15" x2="1200" y2="15" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="45" x2="1200" y2="45" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="75" x2="1200" y2="75" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="105" x2="1200" y2="105" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="135" x2="1200" y2="135" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="165" x2="1200" y2="165" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="195" x2="1200" y2="195" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="225" x2="1200" y2="225" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="255" x2="1200" y2="255" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="285" x2="1200" y2="285" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="315" x2="1200" y2="315" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="345" x2="1200" y2="345" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="375" x2="1200" y2="375" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="405" x2="1200" y2="405" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="435" x2="1200" y2="435" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="465" x2="1200" y2="465" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+    <line x1="0" y1="495" x2="1200" y2="495" stroke="rgba(255,255,255,0.015)" stroke-width="1"/>
+  </svg>
+  <div class="vision-inner">
+    <div class="container">
+      <div class="vision-grid">
+        <div>
+          <div class="reveal">
+            <span class="sec-label dark"><span class="sec-label-dot"></span><span id="label-vision">Visión</span></span>
+            <div class="rule"></div>
+            <h2 class="f-serif" style="font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:400;color:#fff;line-height:1.25;margin-bottom:24px;" id="vision-h2">Una Extremadura más conectada y con servicios públicos más modernos.</h2>
+            <p style="color:#a8a29e;font-size:15px;line-height:1.75;font-weight:300;margin-bottom:20px;" id="vision-p1">El objetivo de la Dirección General es contribuir a que Extremadura disponga de servicios públicos digitales de calidad, infraestructuras de conectividad adecuadas y un tejido social y económico con las capacidades necesarias para aprovechar las oportunidades de la transformación digital.</p>
+            <p style="color:#57534e;font-size:14px;line-height:1.75;font-weight:300;font-style:italic;border-left:2px solid #059669;padding-left:18px;" id="vision-p2">Esta visión se construye de forma gradual, en coherencia con los recursos disponibles, los marcos estratégicos vigentes y las necesidades reales del territorio.</p>
+          </div>
+        </div>
+        <div>
+          <div class="vision-item reveal">
+            <div class="vision-dot-wrap"><div class="vision-dot"></div></div>
+            <p style="font-size:14px;color:#78716c;line-height:1.65;font-weight:300;" id="vision1">Servicios públicos digitales accesibles para toda la ciudadanía</p>
+          </div>
+          <div class="vision-item reveal reveal-d1">
+            <div class="vision-dot-wrap"><div class="vision-dot"></div></div>
+            <p style="font-size:14px;color:#78716c;line-height:1.65;font-weight:300;" id="vision2">Conectividad de calidad en el conjunto del territorio regional</p>
+          </div>
+          <div class="vision-item reveal reveal-d2">
+            <div class="vision-dot-wrap"><div class="vision-dot"></div></div>
+            <p style="font-size:14px;color:#78716c;line-height:1.65;font-weight:300;" id="vision3">Administración pública más eficiente e interoperable</p>
+          </div>
+          <div class="vision-item reveal reveal-d3">
+            <div class="vision-dot-wrap"><div class="vision-dot"></div></div>
+            <p style="font-size:14px;color:#78716c;line-height:1.65;font-weight:300;" id="vision4">Tejido empresarial con mayor capacidad digital</p>
+          </div>
+          <div class="vision-item reveal reveal-d4">
+            <div class="vision-dot-wrap"><div class="vision-dot"></div></div>
+            <p style="font-size:14px;color:#78716c;line-height:1.65;font-weight:300;" id="vision5">Competencias digitales básicas garantizadas para la ciudadanía</p>
+          </div>
+          <div class="vision-item reveal reveal-d5">
+            <div class="vision-dot-wrap"><div class="vision-dot"></div></div>
+            <p style="font-size:14px;color:#78716c;line-height:1.65;font-weight:300;" id="vision6">Gestión responsable y abierta de los datos públicos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACTO ════════════════════════════════════════════════════════════ -->
+<section id="contacto" style="padding:80px 0 96px;background:#fff;">
+  <div class="container-md">
+    <div class="reveal" style="text-align:center;margin-bottom:48px;">
+      <span class="sec-label"><span class="sec-label-dot"></span><span id="label-contacto">Contacto institucional</span></span>
+      <div class="rule center"></div>
+      <h2 class="f-serif" style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:400;color:#1c1917;" id="contacto-h2">Dirección General de Digitalización Regional</h2>
+    </div>
+    <div class="reveal">
+      <div class="contacto-card">
+        <div class="contacto-inner">
+          <!-- Data panel -->
+          <div class="contacto-data">
+            <div class="contacto-row">
+              <div class="contacto-key" id="k-org">Organismo</div>
+              <div class="contacto-val" id="contacto-org">Junta de Extremadura</div>
+              <div class="contacto-sub" id="contacto-dep">Consejería competente en digitalización</div>
+            </div>
+            <div class="contacto-row">
+              <div class="contacto-key" id="k-sede">Sede</div>
+              <div class="contacto-val">Mérida, Extremadura</div>
+            </div>
+            <div class="contacto-row">
+              <div class="contacto-key">Email</div>
+              <div class="contacto-val"><a href="mailto:dgdigitalizacion@juntaex.es">dgdigitalizacion@juntaex.es</a></div>
+            </div>
+            <div class="contacto-row">
+              <div class="contacto-key">Web</div>
+              <div class="contacto-val"><a href="https://www.juntaex.es" target="_blank" rel="noreferrer">juntaex.es</a></div>
+            </div>
+            <div class="active-indicator">
+              <div class="active-dot"></div>
+              <span style="font-size:10px;color:#57534e;letter-spacing:.15em;text-transform:uppercase;" id="active-text">Servicio activo</span>
+            </div>
+          </div>
+          <!-- CTA panel -->
+          <div class="contacto-cta">
+            <div>
+              <div class="contacto-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <rect x="2" y="5" width="16" height="11" rx="1.5" stroke="#059669" stroke-width="1.3" fill="none"/>
+                  <path d="M2 7l8 5.5L18 7" stroke="#059669" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="f-serif" style="font-size:1.2rem;font-weight:400;color:#1c1917;margin-bottom:10px;" id="contacto-ctah">Consultas y colaboraciones</h3>
+              <p style="font-size:13px;color:#a8a29e;line-height:1.65;font-weight:300;" id="contacto-note">Para consultas sobre programas, actuaciones o colaboraciones institucionales en materia de digitalización.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <a href="mailto:dgdigitalizacion@juntaex.es" class="btn-primary" style="justify-content:center;" id="contacto-btn1">Enviar correo electrónico</a>
+              <a href="https://www.juntaex.es" target="_blank" rel="noreferrer" class="btn-outline" id="contacto-btn2">Portal de la Junta · Sede electrónica</a>
+            </div>
+            <p class="eu-note" id="eu-note">Algunas actuaciones están cofinanciadas por fondos europeos del Plan de Recuperación, Transformación y Resiliencia (Next Generation EU).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <div class="footer-icon">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M1 5h8M5 1L9 5 5 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div style="color:#f5f5f4;font-size:11px;font-weight:600;" id="footer-org">Dirección General de Digitalización Regional</div>
+          <div style="color:#57534e;font-size:10px;margin-top:1px;" id="footer-dep">Junta de Extremadura</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <button class="footer-link" id="fl1">Aviso legal</button>
+        <button class="footer-link" id="fl2">Política de privacidad</button>
+        <button class="footer-link" id="fl3">Accesibilidad</button>
+        <button class="footer-link" id="fl4">Sede electrónica</button>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p style="color:#3f3c3a;font-size:10px;" id="footer-copy">© Junta de Extremadura. Todos los derechos reservados.</p>
+      <p style="color:#3f3c3a;font-size:10px;" id="footer-disc">Información sujeta a actualización. Consulte la sede electrónica para datos oficiales.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── TRANSLATIONS ──────────────────────────────────────────────────────────── */
+var LANG = {
+  es: {
+    nav: ["Misión","Líneas","Ámbitos","Iniciativas","Contacto"],
+    hero_eyebrow: "Junta de Extremadura · Consejería competente en digitalización",
+    hero_h1a: "Digitalización",
+    hero_h1b: "de Extremadura.",
+    hero_sub: "La Dirección General de Digitalización Regional impulsa la modernización tecnológica de la administración pública extremeña y el despliegue de infraestructuras y servicios digitales en el conjunto del territorio.",
+    hero_cta1: "Líneas de actuación",
+    hero_cta2: "Contacto institucional",
+    label_mision: "Función y Misión",
+    mision_h2: "Una dirección general al servicio de la transformación digital de Extremadura.",
+    mision_p1: "La Dirección General de Digitalización Regional es el órgano de la Junta de Extremadura responsable de impulsar la transformación digital del territorio, la modernización de los servicios públicos y el fomento de la cultura y las capacidades digitales en la región.",
+    mision_p2: "Su actuación se articula en torno a tres grandes ámbitos: la modernización interna de la administración, el despliegue de infraestructuras de conectividad y el apoyo a la digitalización de ciudadanos, empresas e instituciones.",
+    area1_t: "Administración pública", area1_d: "Modernización de los procesos y servicios de la administración regional mediante tecnología.",
+    area2_t: "Territorio e infraestructuras", area2_d: "Impulso a la conectividad y al despliegue de redes de telecomunicaciones en el territorio.",
+    area3_t: "Ciudadanía y empresas", area3_d: "Apoyo a la adopción digital por parte de ciudadanos, autónomos y tejido productivo.",
+    map_caption: "Extremadura · Red de conectividad y servicios digitales · Representación esquemática",
+    label_lineas: "Líneas de Actuación",
+    lineas_h2: "Áreas de trabajo de la Dirección General.",
+    lineas_sub: "La actividad se estructura en torno a líneas de trabajo concretas, alineadas con los marcos estratégicos nacionales y europeos en materia de digitalización.",
+    linea1_tag:"Adm. electrónica", linea1_t:"Digitalización de servicios públicos", linea1_d:"Desarrollo e implantación de la administración electrónica. Mejora de la sede electrónica y los servicios digitales de la Junta de Extremadura para facilitar la relación con la ciudadanía.",
+    linea2_tag:"Gestión interna", linea2_t:"Modernización administrativa", linea2_d:"Transformación de los procesos internos de gestión pública mediante tecnología. Interoperabilidad entre sistemas, gestión documental electrónica y mejora de la eficiencia operativa.",
+    linea3_tag:"Infraestructura", linea3_t:"Conectividad e infraestructuras", linea3_d:"Coordinación y seguimiento del despliegue de redes de banda ancha en el territorio extremeño, con especial atención a entornos rurales y zonas con menor cobertura.",
+    linea4_tag:"Empresas", linea4_t:"Digitalización empresarial", linea4_d:"Programas de apoyo a la transformación digital de pymes y autónomos. Asesoramiento, formación y canalización de ayudas para la adopción de soluciones tecnológicas.",
+    linea5_tag:"Formación", linea5_t:"Capacidades y cultura digital", linea5_d:"Formación en competencias digitales para ciudadanos, empleados públicos y colectivos con mayor riesgo de brecha digital. Alfabetización tecnológica y programas de capacitación.",
+    linea6_tag:"Datos", linea6_t:"Gobernanza del dato", linea6_d:"Gestión responsable de los datos de la administración regional. Apertura de datos públicos, analítica institucional y alineación con la normativa europea en materia de datos.",
+    label_ambitos: "Ámbitos de impacto",
+    ambitos_h2: "A quién sirve la Dirección General.",
+    ambitos_sub: "La actuación tiene impacto directo en los principales agentes del territorio extremeño.",
+    amb1_tag:"Personas", amb1_t:"Ciudadanía", amb1_d:"Servicios públicos más accesibles y ágiles. Trámites en línea, reducción de desplazamientos y atención digital adaptada a todos los perfiles.",
+    amb2_tag:"Sector productivo", amb2_t:"Empresas", amb2_d:"Apoyo a la transformación digital del tejido productivo regional. Asesoramiento, formación y acceso a financiación para la digitalización empresarial.",
+    amb3_tag:"Sector público", amb3_t:"Administración", amb3_d:"Una administración más eficiente, interoperable y transparente. Mejora de los procesos internos y de la capacidad de respuesta de los servicios públicos.",
+    amb4_tag:"Cohesión territorial", amb4_t:"Territorio", amb4_d:"Reducción de la brecha digital entre entornos urbanos y rurales. Conectividad de calidad como palanca de vertebración e igualdad territorial.",
+    label_iniciativas: "Iniciativas y actuaciones",
+    iniciativas_h2: "Líneas de trabajo en desarrollo.",
+    iniciativas_sub: "La Dirección General coordina actuaciones alineadas con la Agenda España Digital 2026 y los objetivos del Decenio Digital de la Unión Europea.",
+    ini1_t:"Agenda Digital de Extremadura", ini1_d:"Marco estratégico que define los objetivos, prioridades y líneas de acción de la digitalización regional, en coherencia con los planes nacionales y europeos.",
+    ini2_t:"Administración electrónica", ini2_d:"Desarrollo continuo de la sede electrónica de la Junta de Extremadura y de los servicios digitales disponibles para la ciudadanía y las empresas.",
+    ini3_t:"Plan de conectividad", ini3_d:"Seguimiento del despliegue de redes de banda ancha en Extremadura y coordinación con los programas de ayuda para extensión de cobertura en zonas rurales.",
+    ini4_t:"Digitalización empresarial", ini4_d:"Programas de apoyo a pymes en el marco del Plan de Recuperación, canalizando los fondos Next Generation EU destinados a digitalización empresarial.",
+    ini5_t:"Formación digital", ini5_d:"Programas de capacitación digital para empleados públicos, ciudadanos y colectivos vulnerables, en colaboración con entidades formativas y sociales del territorio.",
+    ini6_t:"Datos abiertos", ini6_d:"Gestión del portal de datos abiertos de la Junta de Extremadura y desarrollo de la política regional de gobernanza del dato en el Espacio Europeo de Datos.",
+    label_director: "Dirección General",
+    director_org: "Junta de Extremadura",
+    director_role: "Director General de Digitalización Regional",
+    director_bio: "Al frente de la Dirección General de Digitalización Regional, coordina las políticas y actuaciones de la Junta de Extremadura en materia de transformación digital del territorio, modernización administrativa e infraestructuras digitales.",
+    director_imgnote: "Fotografía institucional oficial · pendiente de incorporar",
+    label_vision: "Visión",
+    vision_h2: "Una Extremadura más conectada y con servicios públicos más modernos.",
+    vision_p1: "El objetivo de la Dirección General es contribuir a que Extremadura disponga de servicios públicos digitales de calidad, infraestructuras de conectividad adecuadas y un tejido social y económico con las capacidades necesarias para aprovechar las oportunidades de la transformación digital.",
+    vision_p2: "Esta visión se construye de forma gradual, en coherencia con los recursos disponibles, los marcos estratégicos vigentes y las necesidades reales del territorio.",
+    vision1:"Servicios públicos digitales accesibles para toda la ciudadanía",
+    vision2:"Conectividad de calidad en el conjunto del territorio regional",
+    vision3:"Administración pública más eficiente e interoperable",
+    vision4:"Tejido empresarial con mayor capacidad digital",
+    vision5:"Competencias digitales básicas garantizadas para la ciudadanía",
+    vision6:"Gestión responsable y abierta de los datos públicos",
+    label_contacto: "Contacto institucional",
+    contacto_h2: "Dirección General de Digitalización Regional",
+    contacto_org: "Junta de Extremadura",
+    contacto_dep: "Consejería competente en digitalización",
+    k_org:"Organismo", k_sede:"Sede",
+    contacto_ctah: "Consultas y colaboraciones",
+    contacto_note: "Para consultas sobre programas, actuaciones o colaboraciones institucionales en materia de digitalización.",
+    contacto_btn1: "Enviar correo electrónico",
+    contacto_btn2: "Portal de la Junta · Sede electrónica",
+    eu_note: "Algunas actuaciones están cofinanciadas por fondos europeos del Plan de Recuperación, Transformación y Resiliencia (Next Generation EU).",
+    active_text: "Servicio activo",
+    footer_org: "Dirección General de Digitalización Regional",
+    footer_dep: "Junta de Extremadura",
+    footer_copy: "© Junta de Extremadura. Todos los derechos reservados.",
+    footer_disc: "Información sujeta a actualización. Consulte la sede electrónica para datos oficiales.",
+    fl1:"Aviso legal", fl2:"Política de privacidad", fl3:"Accesibilidad", fl4:"Sede electrónica",
+    nav_sub: "Digitalización Regional"
+  },
+  en: {
+    nav: ["Mission","Lines of Action","Scope","Initiatives","Contact"],
+    hero_eyebrow: "Regional Government of Extremadura · Department responsible for digitalisation",
+    hero_h1a: "Digitalisation",
+    hero_h1b: "of Extremadura.",
+    hero_sub: "The Directorate General for Regional Digitalisation drives the technological modernisation of Extremadura's public administration and the deployment of digital infrastructure and services across the region.",
+    hero_cta1: "Lines of action",
+    hero_cta2: "Institutional contact",
+    label_mision: "Function & Mission",
+    mision_h2: "A directorate general at the service of Extremadura's digital transformation.",
+    mision_p1: "The Directorate General for Regional Digitalisation is the body within the Regional Government of Extremadura responsible for driving the digital transformation of the territory, the modernisation of public services and the promotion of digital culture and skills across the region.",
+    mision_p2: "Its work is structured around three main areas: the internal modernisation of the administration, the deployment of connectivity infrastructure, and support for the digitalisation of citizens, businesses and institutions.",
+    area1_t:"Public administration", area1_d:"Modernisation of regional administration processes and services through technology.",
+    area2_t:"Territory & infrastructure", area2_d:"Driving connectivity and the deployment of telecommunications networks across the territory.",
+    area3_t:"Citizens & businesses", area3_d:"Supporting digital adoption by citizens, self-employed workers and the productive sector.",
+    map_caption: "Extremadura · Connectivity and digital services network · Schematic representation",
+    label_lineas: "Lines of Action",
+    lineas_h2: "The Directorate General's areas of work.",
+    lineas_sub: "Activity is structured around concrete lines of work, aligned with national and European strategic frameworks on digitalisation.",
+    linea1_tag:"e-Government", linea1_t:"Digitalisation of public services", linea1_d:"Development and implementation of e-government. Improvement of the Regional Government's electronic office and digital services to facilitate citizens' interaction with the administration.",
+    linea2_tag:"Internal management", linea2_t:"Administrative modernisation", linea2_d:"Transformation of internal public management processes through technology. Interoperability between systems, electronic document management and improved operational efficiency.",
+    linea3_tag:"Infrastructure", linea3_t:"Connectivity & infrastructure", linea3_d:"Coordination and monitoring of broadband network deployment in Extremadura, with particular focus on rural environments and areas with lower coverage.",
+    linea4_tag:"Businesses", linea4_t:"Business digitalisation", linea4_d:"Support programmes for the digital transformation of SMEs and self-employed workers. Advisory services, training and channelling of funding for technology adoption.",
+    linea5_tag:"Training", linea5_t:"Digital skills & culture", linea5_d:"Training in digital competencies for citizens, public employees and groups most at risk of the digital divide. Technological literacy and skills programmes.",
+    linea6_tag:"Data", linea6_t:"Data governance", linea6_d:"Responsible management of regional administration data. Open data, institutional analytics and alignment with European data regulation.",
+    label_ambitos: "Scope of impact",
+    ambitos_h2: "Who the Directorate General serves.",
+    ambitos_sub: "The Directorate General's work has direct impact on the main actors in Extremadura's territory.",
+    amb1_tag:"People", amb1_t:"Citizens", amb1_d:"More accessible and agile public services. Online procedures, reduced travel and adapted digital care for all profiles.",
+    amb2_tag:"Productive sector", amb2_t:"Businesses", amb2_d:"Support for the digital transformation of the regional productive sector. Advisory, training and access to funding for business digitalisation.",
+    amb3_tag:"Public sector", amb3_t:"Administration", amb3_d:"A more efficient, interoperable and transparent administration. Improved internal processes and greater public service response capacity.",
+    amb4_tag:"Territorial cohesion", amb4_t:"Territory", amb4_d:"Reducing the digital divide between urban and rural environments. Quality connectivity as a lever for territorial integration and equality.",
+    label_iniciativas: "Initiatives & actions",
+    iniciativas_h2: "Lines of work in development.",
+    iniciativas_sub: "The Directorate General coordinates actions aligned with Spain's Digital Agenda 2026 and the European Union's Digital Decade objectives.",
+    ini1_t:"Extremadura Digital Agenda", ini1_d:"Strategic framework defining the objectives, priorities and lines of action for regional digitalisation, in line with national and European plans.",
+    ini2_t:"e-Government", ini2_d:"Ongoing development of the Regional Government of Extremadura's electronic office and digital services available to citizens and businesses.",
+    ini3_t:"Connectivity plan", ini3_d:"Monitoring broadband network deployment in Extremadura and coordination with support programmes for extending coverage in rural areas.",
+    ini4_t:"Business digitalisation", ini4_d:"SME support programmes under the Recovery, Transformation and Resilience Plan, channelling Next Generation EU funds for business digitalisation.",
+    ini5_t:"Digital training", ini5_d:"Digital skills programmes for public employees, citizens and vulnerable groups, in collaboration with training and social entities in the region.",
+    ini6_t:"Open data", ini6_d:"Management of the Regional Government's open data portal and development of the regional data governance policy within the European Data Space framework.",
+    label_director: "Directorate General",
+    director_org: "Regional Government of Extremadura",
+    director_role: "Director General for Regional Digitalisation",
+    director_bio: "Leading the Directorate General for Regional Digitalisation, he coordinates the Regional Government of Extremadura's policies and actions on digital transformation of the territory, administrative modernisation and digital infrastructure.",
+    director_imgnote: "Official institutional photograph · pending",
+    label_vision: "Vision",
+    vision_h2: "A more connected Extremadura with more modern public services.",
+    vision_p1: "The Directorate General's objective is to contribute to Extremadura having quality digital public services, adequate connectivity infrastructure and a social and economic fabric with the skills needed to take advantage of digital transformation opportunities.",
+    vision_p2: "This vision is built gradually, in line with available resources, current strategic frameworks and the real needs of the territory.",
+    vision1:"Accessible digital public services for all citizens",
+    vision2:"Quality connectivity across the entire regional territory",
+    vision3:"More efficient and interoperable public administration",
+    vision4:"Business sector with greater digital capacity",
+    vision5:"Basic digital skills guaranteed for all citizens",
+    vision6:"Responsible and open management of public data",
+    label_contacto: "Institutional contact",
+    contacto_h2: "Directorate General for Regional Digitalisation",
+    contacto_org: "Regional Government of Extremadura",
+    contacto_dep: "Department responsible for digitalisation",
+    k_org:"Organisation", k_sede:"Location",
+    contacto_ctah: "Enquiries & collaborations",
+    contacto_note: "For enquiries about programmes, actions or institutional collaborations on digitalisation.",
+    contacto_btn1: "Send email",
+    contacto_btn2: "Regional portal · Electronic office",
+    eu_note: "Some actions are co-funded by European funds from the Recovery, Transformation and Resilience Plan (Next Generation EU).",
+    active_text: "Active service",
+    footer_org: "Directorate General for Regional Digitalisation",
+    footer_dep: "Regional Government of Extremadura",
+    footer_copy: "© Regional Government of Extremadura. All rights reserved.",
+    footer_disc: "Information subject to update. Consult the electronic office for official data.",
+    fl1:"Legal notice", fl2:"Privacy policy", fl3:"Accessibility", fl4:"Electronic office",
+    nav_sub: "Regional Digitalisation"
+  }
+};
+
+var currentLang = 'es';
+
+function t(key) { return LANG[currentLang][key] || ''; }
+
+function applyLang() {
+  var L = LANG[currentLang];
+  // Nav links
+  var navBtns = document.querySelectorAll('.nav-link');
+  var navNames = L.nav;
+  navBtns.forEach(function(btn, i) { if (navNames[i]) btn.textContent = navNames[i]; });
+  var mobileBtns = document.querySelectorAll('.mobile-nav-link');
+  mobileBtns.forEach(function(btn, i) { if (navNames[i]) btn.textContent = navNames[i]; });
+  // Nav sub
+  document.querySelector('.nav-logo-text-sub').textContent = L.nav_sub;
+  // Hero
+  document.getElementById('hero-eyebrow-text').textContent = L.hero_eyebrow;
+  document.getElementById('hero-h1a').textContent = L.hero_h1a;
+  document.getElementById('hero-h1b').textContent = L.hero_h1b;
+  document.getElementById('hero-sub').textContent = L.hero_sub;
+  document.getElementById('hero-cta1').textContent = L.hero_cta1;
+  document.getElementById('hero-cta2').textContent = L.hero_cta2;
+  // Misión
+  document.getElementById('label-mision').textContent = L.label_mision;
+  document.getElementById('mision-h2').textContent = L.mision_h2;
+  document.getElementById('mision-p1').textContent = L.mision_p1;
+  document.getElementById('mision-p2').textContent = L.mision_p2;
+  document.getElementById('area1-t').textContent = L.area1_t;
+  document.getElementById('area1-d').textContent = L.area1_d;
+  document.getElementById('area2-t').textContent = L.area2_t;
+  document.getElementById('area2-d').textContent = L.area2_d;
+  document.getElementById('area3-t').textContent = L.area3_t;
+  document.getElementById('area3-d').textContent = L.area3_d;
+  document.getElementById('map-caption').textContent = L.map_caption;
+  // Líneas
+  document.getElementById('label-lineas').textContent = L.label_lineas;
+  document.getElementById('lineas-h2').textContent = L.lineas_h2;
+  document.getElementById('lineas-sub').textContent = L.lineas_sub;
+  for (var i = 1; i <= 6; i++) {
+    document.getElementById('linea'+i+'-tag').textContent = L['linea'+i+'_tag'];
+    document.getElementById('linea'+i+'-t').textContent = L['linea'+i+'_t'];
+    document.getElementById('linea'+i+'-d').textContent = L['linea'+i+'_d'];
+  }
+  // Ámbitos
+  document.getElementById('label-ambitos').textContent = L.label_ambitos;
+  document.getElementById('ambitos-h2').textContent = L.ambitos_h2;
+  document.getElementById('ambitos-sub').textContent = L.ambitos_sub;
+  for (var j = 1; j <= 4; j++) {
+    document.getElementById('amb'+j+'-tag').textContent = L['amb'+j+'_tag'];
+    document.getElementById('amb'+j+'-t').textContent = L['amb'+j+'_t'];
+    document.getElementById('amb'+j+'-d').textContent = L['amb'+j+'_d'];
+  }
+  // Iniciativas
+  document.getElementById('label-iniciativas').textContent = L.label_iniciativas;
+  document.getElementById('iniciativas-h2').textContent = L.iniciativas_h2;
+  document.getElementById('iniciativas-sub').textContent = L.iniciativas_sub;
+  for (var k = 1; k <= 6; k++) {
+    document.getElementById('ini'+k+'-t').textContent = L['ini'+k+'_t'];
+    document.getElementById('ini'+k+'-d').textContent = L['ini'+k+'_d'];
+  }
+  // Director
+  document.getElementById('label-director').textContent = L.label_director;
+  document.getElementById('director-org').textContent = L.director_org;
+  document.getElementById('director-role').textContent = L.director_role;
+  document.getElementById('director-bio').textContent = L.director_bio;
+  document.getElementById('director-imgnote').textContent = L.director_imgnote;
+  // Visión
+  document.getElementById('label-vision').textContent = L.label_vision;
+  document.getElementById('vision-h2').textContent = L.vision_h2;
+  document.getElementById('vision-p1').textContent = L.vision_p1;
+  document.getElementById('vision-p2').textContent = L.vision_p2;
+  for (var v = 1; v <= 6; v++) {
+    document.getElementById('vision'+v).textContent = L['vision'+v];
+  }
+  // Contacto
+  document.getElementById('label-contacto').textContent = L.label_contacto;
+  document.getElementById('contacto-h2').textContent = L.contacto_h2;
+  document.getElementById('contacto-org').textContent = L.contacto_org;
+  document.getElementById('contacto-dep').textContent = L.contacto_dep;
+  document.getElementById('k-org').textContent = L.k_org;
+  document.getElementById('k-sede').textContent = L.k_sede;
+  document.getElementById('contacto-ctah').textContent = L.contacto_ctah;
+  document.getElementById('contacto-note').textContent = L.contacto_note;
+  document.getElementById('contacto-btn1').textContent = L.contacto_btn1;
+  document.getElementById('contacto-btn2').textContent = L.contacto_btn2;
+  document.getElementById('eu-note').textContent = L.eu_note;
+  document.getElementById('active-text').textContent = L.active_text;
+  // Footer
+  document.getElementById('footer-org').textContent = L.footer_org;
+  document.getElementById('footer-dep').textContent = L.footer_dep;
+  document.getElementById('footer-copy').textContent = L.footer_copy;
+  document.getElementById('footer-disc').textContent = L.footer_disc;
+  document.getElementById('fl1').textContent = L.fl1;
+  document.getElementById('fl2').textContent = L.fl2;
+  document.getElementById('fl3').textContent = L.fl3;
+  document.getElementById('fl4').textContent = L.fl4;
+  // HTML lang attr
+  document.documentElement.lang = currentLang;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  applyLang();
+}
+
+/* ── NAV SCROLL ──────────────────────────────────────────────────────────── */
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('navbar');
+  if (window.scrollY > 44) { nav.classList.add('scrolled'); }
+  else { nav.classList.remove('scrolled'); }
+}, { passive: true });
+
+/* ── SMOOTH SCROLL ───────────────────────────────────────────────────────── */
+function goTo(id) {
+  var el = document.getElementById(id);
+  if (el) { el.scrollIntoView({ behavior: 'smooth' }); }
+  // close mobile menu
+  var menu = document.getElementById('mobile-menu');
+  var burger = document.getElementById('burger');
+  menu.classList.remove('open');
+  burger.classList.remove('open');
+}
+
+/* ── MOBILE MENU ─────────────────────────────────────────────────────────── */
+function toggleMenu() {
+  var menu = document.getElementById('mobile-menu');
+  var burger = document.getElementById('burger');
+  menu.classList.toggle('open');
+  burger.classList.toggle('open');
+}
+
+/* ── HERO ENTRY ANIMATION ────────────────────────────────────────────────── */
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.getElementById('hero-eyebrow').classList.add('visible');
+    document.getElementById('hero-h1').classList.add('visible');
+    document.getElementById('hero-sub').classList.add('visible');
+    document.getElementById('hero-ctas').classList.add('visible');
+  }, 100);
+});
+
+/* ── REVEAL ON SCROLL ────────────────────────────────────────────────────── */
+function checkReveals() {
+  var reveals = document.querySelectorAll('.reveal');
+  var windowHeight = window.innerHeight;
+  reveals.forEach(function(el) {
+    var rect = el.getBoundingClientRect();
+    if (rect.top < windowHeight * 0.92) {
+      el.classList.add('visible');
+    }
+  });
+}
+window.addEventListener('scroll', checkReveals, { passive: true });
+window.addEventListener('load', checkReveals);
+setTimeout(checkReveals, 200);
+
+/* ── LINEA CARD HOVER ────────────────────────────────────────────────────── */
+document.querySelectorAll('.linea-card').forEach(function(card) {
+  card.addEventListener('mouseenter', function() { this.style.background = '#111418'; });
+  card.addEventListener('mouseleave', function() { this.style.background = '#0c0f14'; });
+});
+</script>
+</body>
+</html>
